@@ -1,4 +1,4 @@
-//Filename: cmd/api/handlers.go
+// Filename: cmd/api/handlers.go
 package main
 
 import (
@@ -6,24 +6,23 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/kimberly-castillo/orange/internal/data"
+	"github.com/kimberly-castillo/4191/internal/data"
 )
 
-func (app *application) createSchoolHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) createCourseHandler(w http.ResponseWriter, r *http.Request) {
 	//creating a struct to hold a school that will be provided to us via the request
 	//api should be able to hold post requests
 	//post (write) means you want to affect the server/db
 	//GET doesnt change the db
 	//user will send it as a json object, so we take it, store it in go program in instance of struct in order to save to db
+
 	var input struct {
-		Name    string   `json:"name"`
-		Level   string   `json:"level"`
-		Contact string   `json:"contact"`
-		Phone   string   `json:"phone"`
-		Email   string   `json:"email"`
-		Website string   `json:"website,omitempty"`
-		Address string   `json:"address"`
-		Mode    []string `json:"mode"`
+		ID       int64     `json:"id"`
+		Code     string    `json:"course_code"`
+		Title    string    `json:"course_title"`
+		Credits  string    `json:"credits"`
+		CreateAt time.Time `json:"-"`
+		Version  int32     `json:"version"`
 	}
 	//decode the JSON request
 	err := app.readJSON(w, r, &input)
@@ -43,19 +42,15 @@ func (app *application) showSchoolHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 	//fmt.Fprintf(w, "show details of school %d\n", id)
-	school := data.School{
+	course := data.Course{
 		ID:       id,
 		CreateAt: time.Now(),
-		Name:     "University of Belmopan",
-		Level:    "University",
-		Contact:  "Abel Blanco",
-		Phone:    "323-4545",
-		Website:  "https://uob.edu.bz",
-		Address:  "17 Apple Avenue",
-		Mode:     []string{"blended", "online", "face-to-face"},
+		Code:     "CMPS4191",
+		Title:    "Advanced Web",
+		Credits:  "3",
 		Version:  1,
 	}
-	err = app.writeJSON(w, http.StatusOK, envelope{"school": school}, nil)
+	err = app.writeJSON(w, http.StatusOK, envelope{"course": course}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return

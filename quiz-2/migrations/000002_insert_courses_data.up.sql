@@ -1,0 +1,1 @@
+COPY courses FROM '/home/4191/quiz-2/courses.csv' WITH delimiter ',' CSV HEADER;

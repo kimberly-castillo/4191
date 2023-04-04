@@ -1,1 +1,1 @@
-\copy courses FROM './courses.csv' WITH delimiter ',';
+copy courses FROM '/home/kimberly/4191/quiz-2/courses.csv' delimiter ',';
